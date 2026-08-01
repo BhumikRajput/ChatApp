@@ -1,0 +1,719 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #0f1115;
+  color: #e7e9ee;
+}
+
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 1.1rem;
+  color: #9aa0ac;
+}
+
+/* ---------- Layout ---------- */
+.app-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: #16181d;
+  border-right: 1px solid #262a33;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ---------- Avatars ---------- */
+.user-avatar,
+.conv-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ---------- Presence (online/offline) ---------- */
+.conv-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.presence-dot {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #16181d;
+}
+
+.presence-dot.online {
+  background: #10b981;
+}
+
+.presence-dot.offline {
+  background: #6b7280;
+}
+
+.chat-header .presence-dot {
+  border-color: #16181d;
+}
+
+.chat-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.chat-header-status {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #9aa0ac;
+}
+
+/* ---------- User menu ---------- */
+.user-menu {
+  position: relative;
+  border-bottom: 1px solid #262a33;
+}
+
+.user-menu-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #16181d;
+  border: none;
+  cursor: pointer;
+  color: #e7e9ee;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.user-menu-trigger:hover {
+  background: #1c1f26;
+}
+
+.user-menu-name {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  flex-shrink: 0;
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 10px;
+  right: 10px;
+  z-index: 30;
+  background: #1b1e24;
+  border: 1px solid #2a2e37;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  padding: 6px;
+}
+
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: #e7e9ee;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.menu-item:hover {
+  background: #262a33;
+}
+
+.menu-item.danger {
+  color: #f87171;
+}
+
+.menu-badge {
+  background: #6366f1;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+.menu-badge.muted {
+  background: #363a44;
+  color: #b7bcc7;
+}
+
+.menu-divider {
+  height: 1px;
+  background: #2a2e37;
+  margin: 6px 4px;
+}
+
+.menu-panel {
+  padding: 4px;
+}
+
+.menu-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #9aa0ac;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.back-btn:hover {
+  background: #262a33;
+  color: #e7e9ee;
+}
+
+.menu-panel input {
+  width: 100%;
+  padding: 9px 12px;
+  background: #14161b;
+  border: 1px solid #2a2e37;
+  border-radius: 8px;
+  color: #e7e9ee;
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+}
+
+.menu-panel input:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.menu-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 0.88rem;
+}
+
+.menu-list li:hover {
+  background: #262a33;
+}
+
+.empty-row {
+  color: #6b7280;
+  cursor: default !important;
+  font-size: 0.85rem;
+}
+
+.empty-row:hover {
+  background: none !important;
+}
+
+.request-row {
+  cursor: default !important;
+}
+
+.request-row:hover {
+  background: none !important;
+}
+
+.request-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.request-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.request-status {
+  color: #9aa0ac;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.accept-btn,
+.decline-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.accept-btn {
+  background: #10b981;
+  color: white;
+}
+
+.accept-btn:hover {
+  background: #059669;
+}
+
+.decline-btn {
+  background: #262a33;
+  color: #b7bcc7;
+}
+
+.decline-btn:hover {
+  background: #2f333d;
+}
+
+/* ---------- Section titles / empty states ---------- */
+.section-title {
+  margin: 0;
+  padding: 12px 16px 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.empty-state {
+  padding: 8px 16px 12px;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+/* ---------- Conversation list ---------- */
+.conversation-list {
+  flex: 1;
+}
+
+.conversation-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conv-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.conv-item:hover {
+  background: #1c1f26;
+}
+
+.conv-item.active {
+  background: #1e2130;
+  border-right: 3px solid #6366f1;
+}
+
+.conv-name {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conv-delete-btn {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: #f87171;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+
+.conv-item:hover .conv-delete-btn {
+  opacity: 1;
+}
+
+/* ---------- Chat window ---------- */
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0f1115;
+}
+
+.chat-window-empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-chat-message {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: #16181d;
+  border-bottom: 1px solid #262a33;
+  font-weight: 600;
+}
+
+.mobile-back-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #e7e9ee;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 6px 4px 0;
+  margin: -4px 0;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.message.own {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  max-width: 60%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: #1b1e24;
+  border: 1px solid #262a33;
+}
+
+.message-bubble p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  color: #e7e9ee;
+}
+
+.message-time {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.68rem;
+  color: #9aa0ac;
+  text-align: right;
+}
+
+.message.own .message-bubble {
+  background: #6366f1;
+  border: none;
+}
+
+.message.own .message-bubble p {
+  color: white;
+}
+
+.message.own .message-time {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.message-form {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  background: #16181d;
+  border-top: 1px solid #262a33;
+}
+
+.message-form input {
+  flex: 1;
+  padding: 10px 14px;
+  background: #14161b;
+  border: 1px solid #2a2e37;
+  border-radius: 20px;
+  color: #e7e9ee;
+  font-size: 0.92rem;
+}
+
+.message-form input:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.message-form button {
+  padding: 10px 20px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.message-form button:hover {
+  background: #4f46e5;
+}
+
+/* ---------- Auth forms ---------- */
+.auth-form {
+  max-width: 360px;
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  background: #16181d;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid #262a33;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.auth-form h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #e7e9ee;
+}
+
+.auth-form input {
+  padding: 11px 14px;
+  margin-bottom: 12px;
+  background: #14161b;
+  border: 1px solid #2a2e37;
+  border-radius: 8px;
+  color: #e7e9ee;
+  font-size: 0.95rem;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.auth-form button[type="submit"] {
+  padding: 11px 14px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background 0.15s;
+}
+
+.auth-form button[type="submit"]:hover {
+  background: #4f46e5;
+}
+
+.auth-form p {
+  margin-top: 16px;
+  font-size: 0.88rem;
+  color: #9aa0ac;
+  text-align: center;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #818cf8;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin: 4px 0;
+}
+
+.info {
+  color: #9aa0ac;
+  font-size: 0.85rem;
+  margin: 4px 0;
+}
+
+/* =========================================================
+   Mobile / phone-friendly layout
+   Below 768px: show one pane at a time (list OR chat), with
+   a back button in the chat header to return to the list.
+   Above 768px: unchanged two-pane desktop layout.
+   ========================================================= */
+@media (max-width: 768px) {
+  .app-layout {
+    height: 100dvh; /* respects mobile browser chrome (address bar) */
+  }
+
+  .sidebar,
+  .chat-window {
+    width: 100%;
+  }
+
+  /* Default (no conversation open): show the list, hide chat */
+  .chat-window {
+    display: none;
+  }
+
+  /* Conversation open: hide the list, show chat full-screen */
+  .app-layout.chat-open .sidebar {
+    display: none;
+  }
+
+  .app-layout.chat-open .chat-window {
+    display: flex;
+  }
+
+  .mobile-back-btn {
+    display: block;
+  }
+
+  /* Bigger touch targets */
+  .conv-item {
+    padding: 13px 16px;
+  }
+
+  .user-menu-trigger {
+    padding: 16px;
+  }
+
+  .message-form {
+    padding: 10px 12px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  .message-form input {
+    /* 16px prevents iOS Safari from auto-zooming in on focus */
+    font-size: 16px;
+    padding: 11px 14px;
+  }
+
+  .message-form button {
+    padding: 11px 18px;
+    font-size: 16px;
+  }
+
+  .message-bubble {
+    max-width: 82%;
+  }
+
+  .messages {
+    padding: 14px;
+  }
+
+  .chat-header {
+    padding: 12px 14px;
+  }
+
+  /* Delete button relies on :hover, which doesn't exist on touch —
+     show it plainly instead of hiding until hover */
+  .conv-delete-btn {
+    opacity: 1;
+    font-size: 1.4rem;
+    padding: 4px 8px;
+  }
+
+  /* Auth forms shouldn't float in the middle of a tiny screen */
+  .auth-form {
+    margin: 40px 16px;
+    padding: 26px 22px;
+    max-width: none;
+  }
+
+  .auth-form input,
+  .auth-form button[type="submit"] {
+    font-size: 16px;
+  }
+
+  /* Dropdown menu should feel like a proper mobile panel */
+  .user-menu-dropdown {
+    left: 8px;
+    right: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .menu-list {
+    max-height: 50vh;
+  }
+}
+
+/* Extra-narrow phones */
+@media (max-width: 380px) {
+  .message-bubble {
+    max-width: 88%;
+  }
+
+  .chat-header span {
+    font-size: 0.95rem;
+  }
+}
